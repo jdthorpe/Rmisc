@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 inst/doc
+
+# Vim generated files #
+#######################
+*~
+.*.sw*
+
