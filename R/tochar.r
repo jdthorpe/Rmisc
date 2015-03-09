@@ -1,0 +1,88 @@
+# --------------------------------------------------------------------------------
+# pretty conversion of variables to mode character
+# --------------------------------------------------------------------------------
+
+#' Convert object to pretty strings
+#'
+#' Convert objects to strings with more contol than \code{\link[base]{as.character}()} 
+#' and less confusion than \code{\link[base]{format}()} 
+#' @param love Do you love cats? Defaults to TRUE.
+#' @export
+#' @examples
+#' tochar(0.00123,digits=4)
+#' as.character(round(0.00123,digits=4)) #same as above
+#'
+#' tochar(123,digits=4)
+#' as.character(round(123,digits=4))# no significant digits
+#'
+#' tochar(0.000123,digits=4)
+#' as.character(round(0.000123,digits=4)) #not pretty
+#'
+#' tochar(0.0000123,digits=4)
+#' as.character(round(0.0000123,digits=4)) #no significant digits
+#'
+#' \notrun{
+#' tochar(sin)# cant coerce a function to string...
+#' }
+
+tochar <- function(x,...)
+	UseMethod('tochar')
+
+#' @export
+tochar.default <- function(...)
+	cat('I don\'t know how to coerce a variable of type "',
+		class(list(...)[[1]])[1],
+		'" to a string\n',
+		sep = '')
+
+#' @export
+tochar.character <- function(x,...)
+	return(x)
+
+#' @export
+tochar.logical <- function(x,...)
+	ifelse(x,'TRUE','FALSE')
+
+#' @export
+tochar.Date <- function(x,...)
+	as.character(x)
+
+#' @export
+tochar.factor <- tochar.Date 
+
+#' @export
+tochar.numeric <- function(x,digits=1){
+	ntoc1 <- function(x,digits){
+		if(is.infinite(x) )
+			return(as.character(x))
+		x <- round(x,digits=digits)
+		if(is.na(x))return('NA')
+		x <- format(x,scientific = FALSE)
+		if(length(grep('[.]',x))){# x has a decimal place
+			temp <- strsplit(x,'[.]')[[1]]
+			temp[2] <- substr(temp[2],1,digits)
+		}else{temp <- c(x,'')}
+		if(digits < 1)return(temp[1])
+		if(nchar(temp[2])<digits)for(i in (nchar(temp[2])+1):digits)temp[2] <- paste(temp[2],'0',sep = '')
+		return(paste(temp[1],temp[2],sep = '.'))
+	}
+	out <- character(0)
+	for(i in 1:length(x))out[i] <- ntoc1(x[i],digits)
+	return(out)
+}
+
+#' @export
+tochar.double <- tochar.numeric
+
+#' @export
+tochar.integer <- tochar.numeric
+
+#' @export
+tochar.matrix <- function(x,...){
+	out <- matrix('',dim(x)[1],dim(x)[2])
+	for(i in 1:dim(x)[1])
+	for(j in 1:dim(x)[2])
+	out[i,j] <- tochar(x[i,j],...)
+	return(out)
+}
+

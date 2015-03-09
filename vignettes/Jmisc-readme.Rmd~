@@ -1,0 +1,299 @@
+---
+title: "Installing the Jmisc, Jutils, PEB, SIM and other R packages"
+author: "Jason Thorpe [ jdthorpe_at_gmail.com ]"
+date: "2014-12-25"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Jmisc}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+## Installing R and Required R packages
+
+The latest release for R can be found at:
+
+	[http://cran.fhcrc.org/](http://cran.fhcrc.org/)
+
+by clicking on the link for "R Binaries" at the left side of the page, 
+following the link for your computer’s OS (windows, most likely), and then
+by clicking on the link to 'base' and then click "Download R".
+
+Once R is installed, you will need to install some pacagges as follows. 
+
+```{r, eval = FALSE}
+# intall the package builder  packages
+install.packages(c('roxygen2','devtools'),repos="http://cran.fhcrc.org")
+
+# intall the required dependencies 
+install.packages(c('CompQuadForm','multilevel'),repos="http://cran.fhcrc.org")
+
+# intall the optional dependencies 
+install.packages(c('RODBC'),repos="http://cran.fhcrc.org")
+
+# intall the vignette builder packages (optional)
+install.packages(c('pander'),repos="http://cran.fhcrc.org")
+```
+
+You can also install these packages using the 'packages' menu, if you prefer.
+
+## Installing Packages the Easy Way 
+
+### Option 1 (Windows Only)
+
+Local packages can be installed from the binary '.zip' files either 
+(a) by selecting "Install package(s) from local zip files..." from the 
+"packages menu" or (b) from the command line via:
+
+```{r, eval = FALSE}
+home <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools/pkg-bin"
+zipFiles <- c("Jmisc_0.1.zip",
+				   "Jutils_0.1.zip",
+				   "mfactor_0.1.zip",
+				   "PEB_0.1.zip",
+				   "sim_0.1.zip")
+install.packages(file.path(home,zipFiles), repos = NULL)
+```
+
+### Option 2 (OSX Only )
+
+To intall source packages using the OSX GUI, choose "Package Installer" from the 
+"Packages & Data" drop down menu, and at the top of the "R Package Installer" window,
+choose "Local Source Package"  from the drop down menu at the top (which by
+default is set to "CRAN (binaries)") and then click "install".   This will bring
+up a file menu, and you just need to select the approprioate '.tar.gz' file.
+
+### Option 3 (Any Platform, Including OSX and Windows)
+
+Local packages can be installed from source packages at the command line via:
+
+```{r , eval = FALSE}
+home <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools/pkg-src"
+tarFiles <- c("Jmisc_0.1.tar.gz",
+				   "Jutils_0.1.tar.gz",
+				   "mfactor_0.1.tar.gz",
+				   "PEB_0.1.tar.gz",
+				   "sim_0.1.tar.gz")
+install.packages(file.path(home,tarFiles), repos = NULL,type='source')
+```
+
+
+## Installing Local Packages the Hard Way 
+
+On my Windows machine at the Hutch, my library path points to 
+
+```
+.libPaths()
+#> [1] "\\\\home.fhcrc.org/jthorpe/R/win-library/3.1"
+#> [2] "C:/Program Files/R/R-3.1.0/library"
+```
+
+which is a problem devtools::install fails when attempting to install a
+package onto a server location (e.g.`"\\home.fhcrc.org/jthorpe/...`').  
+These lines fixt that bug:
+
+```{r}
+.libPaths(gsub('^\\\\\\\\home.fhcrc.org(\\\\|/)[-a-zA-Z0-9._]+(\\\\|/)?','h:\\\\',.libPaths()))
+
+root <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools"
+```
+
+Alternative
+
+Before installing, you will want to document any changed packages as
+follows, and after installing, it is a good idea to re-build the vignettes.
+
+
+```{r, eval = FALSE}
+
+devtools::document(file.path(root,"Jmisc"))
+devtools::install(file.path(root,"Jmisc"))
+devtools::build_vignettes(file.path(root,"Jmisc"))
+
+devtools::document(file.path(root,"Jutils"))
+devtools::install(file.path(root,"Jutils"))
+
+devtools::document(file.path(root,"mfactor"))
+devtools::install(file.path(root,"mfactor"))
+devtools::build_vignettes(file.path(root,"mfactor"))
+
+devtools::document(file.path(root,"PEB"))
+devtools::install(file.path(root,"PEB"))
+devtools::build_vignettes(file.path(root,"PEB"))
+
+devtools::document(file.path(root,"SIM"))
+devtools::install(file.path(root,"SIM"))
+devtools::build_vignettes(file.path(root,"SIM"))
+
+devtools::document("H:/O/popsim/PopSim/dist/LifeTable")
+devtools::install("H:/O/popsim/PopSim/dist/LifeTable")
+devtools::build_vignettes("H:/O/popsim/PopSim/dist/LifeTable")
+```
+Note that the package SIM depends on the package `mfactor`, so you may need to
+have `mfactor` installed befor you try and install `sim`
+
+
+## Using Local Packages 
+
+Once installed, these packages can be loaded in the usual way 
+
+```{r, eval = FALSE}
+require('Jmisc')
+require('Jutils')
+require('PEB')
+require('mfactor')
+require('sim')
+```
+
+Package contents can be explored in the usual way. 
+```{r, eval = FALSE}
+help(package='Jmisc')
+help(package='Jutils')
+help(package='PEB')
+help(package='mfactor')
+help(package='sim')
+```
+
+and help files are available for all exported functions!
+
+```{r, eval = FALSE}
+?mfactor
+?ppeb
+?lu
+```
+
+# Building Packages
+
+This section is concerned with building R packages, and is not required
+for using existing local package files.
+
+## Building Vignettes
+
+### Step 0.1: Install Pandoc + Bug Fix
+Building Vignettest in the the PEB and Jmisc packages required that you install
+PanDoc. For details on installing Pandoc click [here](http://johnmacfarlane.net/pandoc/installing.html).
+
+There is a bug in the windows version of devtools, which prevents it from
+finding Pandoc, which will result in an error message stating `Error :
+invalid version specification ‘pandoc.exe 1.13.0.1’`.  As a work
+around, you can set an environment variable similar to:
+
+```{r, eval = FALSE}
+Sys.setenv(RSTUDIO_PANDOC="C:\\Users\\jthorpe\\AppData\\Local\\Pandoc\\")
+```
+
+For details on the bug fix, see [this article](http://stackoverflow.com/questions/26803652/devtoolsbuild-vignettes-yields-error-invalid-version-specification-pandoc) on StackOverFlow.
+
+### Step 0.2: Un-Fix the Bug Fix
+Remember that bug in `devtools::install` that was fixed by resetting the
+library paths?  Well that fix is a bug here because PanDoc can't see
+certian drive mappings (e.g. `"h:\..."`). So if you installed any of the 
+packages using `devtools::install` you'll need to re-start your session
+so that .libPaths() does not rely on a drive mapping that PanDoc can't
+follow.
+
+### Step 1: Build the Vignettes
+
+```{r, eval = FALSE}
+devtools::build_vignettes(file.path(root,"Jmisc"))
+devtools::build_vignettes(file.path(root,"PEB"))
+devtools::build_vignettes(file.path(root,"SIM"))
+devtools::build_vignettes(file.path(root,"mfactor"))
+devtools::build_vignettes("H:/O/popsim/PopSim/dist/LifeTable")
+
+
+```
+
+
+## Building Package Files
+
+To build the source packages (including the vignettes), use:
+
+```{r, eval = FALSE}
+devtools::build(file.path(root,"Jmisc")		,path=file.path(root,'pkg-src'))
+devtools::build(file.path(root,"Jutils")	,path=file.path(root,'pkg-src'))
+devtools::build(file.path(root,"PEB")		,path=file.path(root,'pkg-src'))
+devtools::build(file.path(root,"mfactor")	,path=file.path(root,'pkg-src'))
+devtools::build(file.path(root,"SIM")		,path=file.path(root,'pkg-src'))
+```
+
+and to build the (windows) binary packages (including the vignettes), use:
+
+```{r, eval = FALSE}
+devtools::build(file.path(root,"Jmisc")		,path=file.path(root,'pkg-bin'),binary=TRUE)
+devtools::build(file.path(root,"Jutils")	,path=file.path(root,'pkg-bin'),binary=TRUE)
+devtools::build(file.path(root,"PEB")		,path=file.path(root,'pkg-bin'),binary=TRUE)
+devtools::build(file.path(root,"mfactor")	,path=file.path(root,'pkg-bin'),binary=TRUE)
+devtools::build(file.path(root,"SIM")		,path=file.path(root,'pkg-bin'),binary=TRUE)
+```
+
+## Final Notes
+
+These pacakges were initialized via:
+
+```{r, eval = FALSE}
+dir <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools/Jmisc"
+devtools::create(dir)
+devtools::use_vignette('Jmisc-readme',dir)
+```
+
+And I added this line each to the first code block in each 
+vignette to make the code code output pretty
+
+	```{r, eval = FALSE}
+	knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+	```
+
+
+## Windows Bugs 
+
+### Bug 1: Libraryies on a remote machine.
+
+On my Windows machine at the Hutch, my library path points to 
+
+```
+.libPaths()
+#> [1] "\\\\server.name/me/R/win-library/3.1"
+#> [2] "C:/Program Files/R/R-3.1.0/library"
+```
+
+which is a problem because devtools::install fails when attempting to install a
+package onto a server location (e.g.`"\\server.name/me/...`').  
+
+There are two methods for fixing this bug.  The first (and preferred) method is to 
+set an enviromment variable by choosing Start Menu > Control Panel > System > 
+Advanced system settings > Environment variables, and click "new" to create a new 
+system varible called `R_LIB_USER` which points to a directory on your local machine 
+where you would like your R User Library to reside (e.g. `C:\Users\Me\R\win-library\3.1`)
+
+The second solution is to map the server to a drive letter and update your `.libPaths()`
+accorginly like so:
+
+```{r}
+.libPaths(gsub('^\\\\\\\\server.name.fhcrc.org(\\\\|/)[-a-zA-Z0-9._]+(\\\\|/)?',
+               'h:\\\\',.libPaths())) # this presumes the network drive is mapped to 'h'
+```
+
+Note that this solution requires that you either put the above call in your `.Rprofile` or 
+you call the line before installing the package. 
+
+Note that this is not preferred b/c this alternate fix actually introduces a bug in Pandoc
+which is used to build the vignettes...
+
+### Bug 1: Pandoc and RStudio
+
+Pandoc expects that Rstudio is installed, and if it isn't, it freaks out.  The preferred 
+(permenaent fix) is to create an environment variable called `RSTUDIO_PANDOC` with the value 
+`C:\Users\jthorpe\AppData\Local\Pandoc` (Bug 1 for instructions for creating an environment varaible).
+
+Alternatively, you can call this line prior to building the vignettes.
+
+	Sys.setenv(RSTUDIO_PANDOC="C:\\Users\\jthorpe\\AppData\\Local\\Pandoc\\")
+
+This fix is not the preferred method because it does not work with `R CMD check` (and hence `devtools::check()`) which rely on a `--Vanilla` session.
+
+
+
+
