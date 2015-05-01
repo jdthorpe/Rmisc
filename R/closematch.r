@@ -12,9 +12,10 @@
 #' @param d Maximum distance between points for a match to succeed (default= Inf)
 #' @param nomatch Value assigned to non-matched controls (default NA_integer_)
 #' @param debug If provided, the object returned by \code{closematch()} includes
+#' @param oneToOne If True values in X are matched to a unique value in Y and vice versa.
+#' otherwise, an left-join type index returned as in \code{\link[base]{match}}
 #' helpful attributes useful for debugging 
 #' 
-#' @usage closematch(x,y,d=Inf,nomatch=NA_integer_,debug=F)
 #' @export
 #' 
 #' @examples
@@ -26,8 +27,8 @@
 #' y = c(1,4,51,100)
 #' closematch(x,y)
 #' closematch(x,y,d=2)
-#' closematch(x,y,oneToOne=T)
-#' closematch(x,y,d=2,oneToOne=T)
+#' closematch(x,y,oneToOne=TRUE)
+#' closematch(x,y,d=2,oneToOne=TRUE)
 #' 
 #' x <- rnorm(50000)
 #' y <- rnorm(50000)
@@ -43,14 +44,16 @@ closematch <- function(x,
 					   y,
 					   id.x,
 					   id.y,
-					   ...,
-					   debug=F){
+					   d=Inf,
+					   nomatch=NA_integer_,
+					   oneToOne=FALSE,
+					   debug=FALSE){
 	# VALIDATE THE ARGUMENTS
 	if(missing(id.x) != missing(id.y))
 		stop('id.x and id.y must both be provided or both be absent')
 
 	# THE INNER FUNCTION THAT DOES LEFT-JOIN MATCHING
-	inner <- function(x,y,d=Inf,nomatch=NA_integer_){
+	inner <- function(x,y,d,nomatch=NA_integer_){
 		if(length(x)==0)
 			return(numeric(0))
 		if(length(y)==0)
@@ -79,10 +82,10 @@ closematch <- function(x,
 	}
 
 	# A WRAPPER THAT PROVIDES THE 1:1 MATCHING
-	inner2 <- function(x,y,oneToOne=F,debug=F,...){
+	inner2 <- function(x,y,oneToOne,d,nomatch,debug){
 		if(oneToOne){
-			(xy <- inner(x,y,...))
-			(yx <- inner(y,x,...))
+			(xy <- inner(x,y,d=d,nomatch=nomatch))
+			(yx <- inner(y,x,d=d,nomatch=nomatch))
 			(xyDups <- duplicated(xy) & !is.na(xy))
 			(yxDups <- duplicated(yx) & !is.na(yx))
 			if(debug){
@@ -102,12 +105,12 @@ closematch <- function(x,
 				xy[unique(yx[yxDups])] <- NA
 			return(xy)
 		}
-		else return(inner(x,y,...))
+		else return(inner(x,y,d=d,nomatch=nomatch))
 	}
 
 	# A WRAPPER THAT PROVEDS THE WITHIN-ID MATCHING
 	if(missing(id.x))
-		return(inner2(x,y,...,debug=debug))
+		return(inner2(x,y,d=d,nomatch=nomatch,oneToOne=oneToOne,debug=debug))
 	else{
 		stopifnot(all(!is.na(id.y)))
 		stopifnot(all(!is.na(id.x)))
@@ -123,7 +126,7 @@ closematch <- function(x,
 		for(id in unique(id.x)){
 			xIndx <- (id.x == id)
 			yIndx <- (id.y == id)
-			tmp <- inner2(x=x[xIndx],y=y[yIndx],...,debug=debug)
+			tmp <- inner2(x=x[xIndx],y=y[yIndx],d=d,nomatch=nomatch,oneToOne=oneToOne,debug=debug)
 			out[xIndx] <- which(yIndx)[as.numeric(tmp)]
 			if(debug){
 				xdebug[xIndx] <- attributes(tmp)$x
@@ -137,9 +140,9 @@ closematch <- function(x,
 }
 
 #' @export
-print.mdebug <- function(x){
+print.mdebug <- function(x,...){
 	cat('Index with debug attributes\n')
 	attributes(x) <- NULL
-	print(x)
+	NextMethod()
 }
 

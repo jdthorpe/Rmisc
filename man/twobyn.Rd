@@ -2,9 +2,32 @@
 % Please edit documentation in R/twoByN.r
 \name{twobyn}
 \alias{twobyn}
+\alias{twobyn.Date}
+\alias{twobyn.character}
+\alias{twobyn.default}
+\alias{twobyn.factor}
+\alias{twobyn.integer}
+\alias{twobyn.logical}
+\alias{twobyn.numeric}
 \title{Summarize balance of a variable between two groups}
 \usage{
 twobyn(x, ltwo, variable.desc = deparse(substitute(x)), ...)
+
+\method{twobyn}{default}(x, ltwo, variable.desc, ...)
+
+\method{twobyn}{logical}(x, ltwo, variable.desc = deparse(substitute(x)), ...)
+
+\method{twobyn}{Date}(x, ...)
+
+\method{twobyn}{numeric}(x, ltwo, variable.desc = deparse(substitute(x)), ...)
+
+\method{twobyn}{integer}(x, ltwo, variable.desc = deparse(substitute(x)), ...)
+
+\method{twobyn}{character}(x, ltwo, variable.desc = deparse(substitute(x)),
+  p.val = TRUE, ...)
+
+\method{twobyn}{factor}(x, ltwo, variable.desc = deparse(substitute(x)),
+  p.val = TRUE, ...)
 }
 \arguments{
 \item{x}{a variabile to be compared between levels of `ltwo`}
@@ -14,6 +37,8 @@ twobyn(x, ltwo, variable.desc = deparse(substitute(x)), ...)
 \item{variable.desc}{= deparse(substitute(x)) # name of the variable x}
 
 \item{...}{# additional arguments to npercent methods}
+
+\item{p.val}{logical. If TRUE, pvalues are calculated. (Applies only to factor and character methods)}
 
 \item{digits.p.value}{precision of p-value (default=4)}
 

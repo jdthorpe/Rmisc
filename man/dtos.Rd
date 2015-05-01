@@ -15,8 +15,10 @@ Convert Dates into strings with format YYYYMMDD
 \examples{
 dtos()
 dtos('2013-01-31')
-dtos('01-31-2013')
 dtos('01/31/2013')
-dtos(c('2013-01-31','01/31/2013'))
+\dontrun{
+dtos('01-31-2013') # non-stanard format
+dtos(c('2013-01-31','01/31/2013')) # inconsistent format
+}
 }
 

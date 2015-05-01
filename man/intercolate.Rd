@@ -4,10 +4,12 @@
 \alias{intercolate}
 \title{Intercolte two items}
 \usage{
-intercolate(x, y, ...)
+intercolate(x, y, x.text = "x.", y.text = "y.")
 }
 \arguments{
 \item{x,y}{two variables of the same class to be intercolated}
+
+\item{x.text,y.text}{prefixes to be prepended to the \code{names(x)} and \code{names(y)} respectively}
 }
 \description{
 This function allows intercolates 2 variables
@@ -15,7 +17,7 @@ This function allows intercolates 2 variables
 \examples{
 intercolate(paste(1:3),LETTERS[1:3])
 intercolate(paste(1:4),LETTERS[1:3])
-\\notrun{
+\dontrun{
 intercolate(paste(1:4),LETTERS[1:3])
 }
 }

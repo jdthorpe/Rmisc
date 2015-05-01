@@ -5,10 +5,12 @@
 #' Regular expressoin searches of the names of a data frame
 #' @param pattern a reguralar expression pattern
 #' @param x an object to be searched. If x is a \code{data.frame} then the names of x are searched
+#' @param ic logical. If FALSE, the pattern matching is case sensitive and if TRUE, case is ignored during matching
+#' @param ... additional parameters for \code{\link[base]{grep}}
 #' @export
 gr <- function(pattern,# the pattern to search for.  Note that this is *always* treated as a string
 			   x=names(data),# the vector to search, (`data` just happens to be my standard name for a dataset)
-			   ic=T,
+			   ic=TRUE,
 			   ...){
 
 	if(missing(x)){
@@ -22,9 +24,9 @@ gr <- function(pattern,# the pattern to search for.  Note that this is *always* 
 	if(is.list(x))
 	   	x <- names(x)
 
-	if(inherits(suppressWarnings(try(force(pattern),T)),'try-error')||
+	if(inherits(suppressWarnings(try(force(pattern),TRUE)),'try-error')||
 	   (mode(pattern)=='function'))
 		pattern <- deparse(substitute(pattern))
-	grep(pattern,x,value=T,ignore.case=ic,...)
+	grep(pattern,x,value=TRUE,ignore.case=ic,...)
 }
 

@@ -1,32 +1,27 @@
 #' Summarize a variable in a nice table
 #'
-#' Summarize a variable in a nice table that is compatibile with summaries produced by \code{\link{twoByN}}
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
+#' Summarize a variable in a nice table that is compatibile with summaries produced by \code{\link{twobyn}}
 #' @keywords cats
 #' @export
-#' @seealso \code{\link{twoByN}} for summarizeing a variable between two groups
-#' @examples
-#' cat_function()
-
+#' @seealso \code{\link{twobyn}} for summarizeing a variable between two groups
+#'
 #' @param x a variabile to summarized
 #' @param varName = 'x' # name of the variable x
-#' @param lof=F if \code{TRUE}  the denomiator is included in the percntage 
+#' @param lof if \code{TRUE}  the denomiator is included in the percntage (defautl=FALSE).
 #' [example:\code{"15 (15\% of of 100)"}]
 #' 
 #' @param mof if \code{TRUE}  the number of missing values is included in text summary
 #' 
-#' @param lyesonly If \code{TRUE}, the number of false reponses is dropped from the output table (default = F)
+#' @param lyesonly If \code{TRUE}, the number of false reponses is dropped from the output table (default = FALSE)
 #' @param digits number of decimals used if the summary statistic is the mean and standard deviation (default = c(1,1))
 #'
-#' @param digits.meansd deciaml precision when the summary statistic is  
+#' @param ... additional arguments to \code{\link{meansd}}
 #' the mean and sd of x 
-summarize <- function(
-					  x # x is any variabile to be compared to 'ltwo', a logical variable.
+summarize <- function(x # x is any variabile to be compared to 'ltwo', a logical variable.
 				  ,varName = deparse(substitute(x)) 
-				  ,lof=F # (logical) do you want to include the denomiator in the percntage? 'ie 15 (15% of of 100)'
-				  ,mof=F # like lof but for the number of missing values
-				  ,lyesonly = F # report only the % Trues for logical variables?
+				  ,lof=FALSE # (logical) do you want to include the denomiator in the percntage? 'ie 15 (15% of of 100)'
+				  ,mof=FALSE # like lof but for the number of missing values
+				  ,lyesonly = FALSE # report only the % Trues for logical variables?
 				  ,digits=1
 				  ,...)
 	UseMethod('summarize')
@@ -40,13 +35,13 @@ summarize.default <- function(...)
 #' @export
 summarize.logical <- function(x
 				  ,varName = 'x' # name of the variable x
-							  ,lof=F,mof=F,lyesonly=F,digits=1,...){
+							  ,lof=FALSE,mof=FALSE,lyesonly=FALSE,digits=1,...){
 	if(lyesonly){
 		out <- rbind( c(  varName
 						# summary description
 						,'Yes'
 						# summary statistics
-						, npercent( x,of = lof,na.rm = T,...)
+						, npercent( x,of = lof,na.rm = TRUE,...)
 						# missings
 						, ifelse(sum(is.na(x)),npercent( is.na(x),of = mof,...),'None')
 						)
@@ -57,7 +52,7 @@ summarize.logical <- function(x
 						# summary description
 						,'No'
 						# summary statistics
-						, npercent(!x,of = lof,na.rm = T,...)
+						, npercent(!x,of = lof,na.rm = TRUE,...)
 						# missings
 						, ''
 						)
@@ -65,7 +60,7 @@ summarize.logical <- function(x
 						# summary description
 						,'Yes'
 						# summary statistics
-						, npercent( x,of = lof,na.rm = T,...)
+						, npercent( x,of = lof,na.rm = TRUE,...)
 						# missings
 						, ifelse(sum(is.na(x)),npercent( is.na(x),of = mof,...),'None')
 						)
@@ -82,7 +77,7 @@ summarize.logical <- function(x
 #' @export
 summarize.numeric <- function(x
 				  ,varName = 'x' # name of the variable x
-							  ,lof=F,mof=F,lyesonly=F,digits = 1,...){
+							  ,lof=FALSE,mof=FALSE,lyesonly=FALSE,digits = 1,...){
 	if( length(digits)==1)
 		digits <- c(digits,digits)
 	out <- cbind(  varName
@@ -92,7 +87,8 @@ summarize.numeric <- function(x
 				, meansd( x,digits=digits)
 				# statistcial test
 				# missings
-				, ifelse(sum(is.na(x)),npercent( is.na(x),of = mof,...),'None')
+				, ifelse(sum(is.na(x)),
+						 npercent( is.na(x),of = mof,...),'None')
 				)
 	dimnames(out)[[2]] <- c('Variable Name'
 							,'Value'
@@ -108,7 +104,7 @@ summarize.integer <- summarize.numeric
 #' @export
 summarize.character <- function(x
 				  ,varName = 'x' # name of the variable x
-								,lof=F,mof=F,lyesonly=F,digits=1,...){
+								,lof=FALSE,mof=FALSE,lyesonly=FALSE,digits=1,...){
 	xtab <- table(x)
 	temp <- NULL
 	for(r in 1:dim(xtab)){
@@ -123,7 +119,8 @@ summarize.character <- function(x
 					, temp
 					# missings
 					, c(rep('',length(xtab)-1 )
-						,if(sum(is.na(x))>0) npercent( is.na(x),of = mof,...) else 'None')
+						,if(sum(is.na(x))>0) 
+							npercent( is.na(x),of = mof,...) else 'None')
 					)
 	dimnames(out)[[2]] <- c('Variable Name'
 							,'Value'

@@ -1,8 +1,10 @@
 ---
 title: "Installing the Jmisc, Jutils, PEB, SIM and other R packages"
 author: "Jason Thorpe [ jdthorpe_at_gmail.com ]"
-date: "2014-12-25"
-output: rmarkdown::html_vignette
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    self_contained: no
 vignette: >
   %\VignetteIndexEntry{Jmisc}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +20,7 @@ The latest release for R can be found at:
 	[http://cran.fhcrc.org/](http://cran.fhcrc.org/)
 
 by clicking on the link for "R Binaries" at the left side of the page, 
-following the link for your computer’s OS (windows, most likely), and then
+following the link for your computer's OS (windows, most likely), and then
 by clicking on the link to 'base' and then click "Download R".
 
 Once R is installed, you will need to install some pacagges as follows. 
@@ -177,7 +179,7 @@ PanDoc. For details on installing Pandoc click [here](http://johnmacfarlane.net/
 
 There is a bug in the windows version of devtools, which prevents it from
 finding Pandoc, which will result in an error message stating `Error :
-invalid version specification ‘pandoc.exe 1.13.0.1’`.  As a work
+invalid version specification 'pandoc.exe 1.13.0.1'`.  As a work
 around, you can set an environment variable similar to:
 
 ```{r, eval = FALSE}
@@ -187,12 +189,29 @@ Sys.setenv(RSTUDIO_PANDOC="C:\\Users\\jthorpe\\AppData\\Local\\Pandoc\\")
 For details on the bug fix, see [this article](http://stackoverflow.com/questions/26803652/devtoolsbuild-vignettes-yields-error-invalid-version-specification-pandoc) on StackOverFlow.
 
 ### Step 0.2: Un-Fix the Bug Fix
+
 Remember that bug in `devtools::install` that was fixed by resetting the
 library paths?  Well that fix is a bug here because PanDoc can't see
 certian drive mappings (e.g. `"h:\..."`). So if you installed any of the 
 packages using `devtools::install` you'll need to re-start your session
 so that .libPaths() does not rely on a drive mapping that PanDoc can't
 follow.
+
+### Step 0.3: Bug fix
+
+Due to constraints on windows, Pandoc is not read the CSS file included with the rmarkdown 
+package.  To avoid an error stating  `pandoc.exe: Could not fetch c:\Users\UserName\R\win-library\3.1\ ... \vignette.css` 
+you'll want to change the default output in the YAML header from this: 
+
+	output: rmarkdown::html_vignette
+
+to this: 
+
+	output: 
+	  rmarkdown::html_vignette:
+		self_contained: no
+
+note that this bug fix is not required on OSX.
 
 ### Step 1: Build the Vignettes
 
@@ -202,10 +221,7 @@ devtools::build_vignettes(file.path(root,"PEB"))
 devtools::build_vignettes(file.path(root,"SIM"))
 devtools::build_vignettes(file.path(root,"mfactor"))
 devtools::build_vignettes("H:/O/popsim/PopSim/dist/LifeTable")
-
-
 ```
-
 
 ## Building Package Files
 
@@ -249,7 +265,7 @@ vignette to make the code code output pretty
 
 ## Windows Bugs 
 
-### Bug 1: Libraryies on a remote machine.
+### Bug 1: Network Drive Mapping
 
 On my Windows machine at the Hutch, my library path points to 
 
@@ -282,11 +298,11 @@ you call the line before installing the package.
 Note that this is not preferred b/c this alternate fix actually introduces a bug in Pandoc
 which is used to build the vignettes...
 
-### Bug 1: Pandoc and RStudio
+### Bug 2: Pandoc and RStudio
 
 Pandoc expects that Rstudio is installed, and if it isn't, it freaks out.  The preferred 
 (permenaent fix) is to create an environment variable called `RSTUDIO_PANDOC` with the value 
-`C:\Users\jthorpe\AppData\Local\Pandoc` (Bug 1 for instructions for creating an environment varaible).
+`C:\Users\jthorpe\AppData\Local\Pandoc` (See Bug 1 for instructions for creating an environment varaible).
 
 Alternatively, you can call this line prior to building the vignettes.
 

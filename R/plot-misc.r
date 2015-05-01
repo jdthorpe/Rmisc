@@ -12,7 +12,7 @@
 #' @param x,y x and y coordinats, usually  in the interval [0,1]
 #' @export
 #' @examples
-#' plot(1:5,1:3)
+#' plot(c(1,5),c(-3,3))
 #' plotloc(1,1) # the top right corner of the plotting region 
 #' plotloc(0,0) # the bottom left corner of the plotting region 
 plotloc<-function(x = .5,y = .5){
@@ -33,7 +33,9 @@ plotloc<-function(x = .5,y = .5){
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()OT LOCATIONS
+#' \dontrun{
+#' plotlocator()
+#' }
 plotlocator<-function(n=1,...){
 	xy <- locator(n...)
 	usr<-par('usr')
@@ -69,8 +71,12 @@ axis <- function(...,log=FALSE)
 #' which comes in handy when calling plot(log(x),log(y),...) is easier than 
 #' calling  plot(x,y,log='xy',...)
 #'
-#' @inheritParams graphics::axis
-#' @seealso \code{\link{axis}}
+#' @param side an integer specifying which side of the plot the axis is to be drawn on. See \code{\link[graphics]{axis}} for details
+#' @param at the points at which tick-marks are to be drawn. See \code{\link[graphics]{axis}} for details
+#' @param labels labels for the tick marks. See \code{\link[graphics]{axis}} for details
+#' @param ... additional arguments to \code{\link[graphics]{axis}}
+#' @usage logAxis(side,at,labels,...)
+#' @seealso \code{\link[graphics]{axis}}
 #' @export
 logAxis <- function(side,
 					at=log(labels),

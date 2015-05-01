@@ -4,19 +4,23 @@
 \alias{closematch}
 \title{One-To-One Nearest Neighbor Matching}
 \usage{
-closematch(x,y,d=Inf,nomatch=NA_integer_,debug=F)
+closematch(x, y, id.x, id.y, d = Inf, nomatch = NA_integer_,
+  oneToOne = FALSE, debug = FALSE)
 }
 \arguments{
 \item{x,y}{values on which to match individul records (similar to \code{match(x,y)})}
 
 \item{id.x,id.y}{If provided, x and y are matched within group.}
 
-\item{debug}{If provided, the object returned by \code{closematch()} includes
-helpful attributes useful for debugging}
-
 \item{d}{Maximum distance between points for a match to succeed (default= Inf)}
 
 \item{nomatch}{Value assigned to non-matched controls (default NA_integer_)}
+
+\item{oneToOne}{If True values in X are matched to a unique value in Y and vice versa.
+otherwise, an left-join type index returned as in \code{\link[base]{match}}
+helpful attributes useful for debugging}
+
+\item{debug}{If provided, the object returned by \code{closematch()} includes}
 }
 \description{
 One-To-One Nearest Neighbor Matching.
@@ -30,8 +34,8 @@ x = c(1,50,54,100)
 y = c(1,4,51,100)
 closematch(x,y)
 closematch(x,y,d=2)
-closematch(x,y,oneToOne=T)
-closematch(x,y,d=2,oneToOne=T)
+closematch(x,y,oneToOne=TRUE)
+closematch(x,y,d=2,oneToOne=TRUE)
 
 x <- rnorm(50000)
 y <- rnorm(50000)

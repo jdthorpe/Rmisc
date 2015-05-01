@@ -1,12 +1,18 @@
 
 
 
-
+#' Reverse a match index
+#' 
+#' Reverse a match index, which can save time when the index takes a long time to create
+#' 
+#' @param x A match index, often the result of calling `x <- match(a,b)`
+#' @param len the length of the the retusulting index [i.e. `length(b)`]
+#' 
 #' @export match.rev
 match.rev <- function(x,len){
 	if(any(duplicated(x) & !is.na(x)))
 		warning('Reversed match is not unique; using first match only.')
-	stopifnot(all(x <= len,na.rm=T))
+	stopifnot(all(x <= len,na.rm=TRUE))
 	match(seq.int(len),x)
 }
 
@@ -14,7 +20,7 @@ match.rev <- function(x,len){
 # unit testing ==================================================
 #-- 
 #-- i1 = sample(letters)
-#-- i2 = sample(letters,50,T)
+#-- i2 = sample(letters,50,TRUE)
 #-- 
 #-- mm <- match(i2,i1)
 #-- MM <- suppressWarnings(match.rev(match.rev(mm,26),50))

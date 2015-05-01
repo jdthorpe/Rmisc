@@ -4,18 +4,22 @@
 \alias{threshold}
 \title{Calculate a threshold from a set of marker values, and associted case status}
 \usage{
-threshold(x, probs, ...)
+threshold(x, probs, specificity.bias = "over", case.values,
+  sensitivity.bias = "proportional", na.rm = FALSE, ci = FALSE,
+  conf.level = 0.95, verbose = FALSE, quietly = FALSE)
 }
 \arguments{
 \item{x}{a vector of marker values from unaffected individuals}
 
 \item{probs}{Specificity threshold(s) for the returned threshold(s).}
 
-\item{specificity.bias='over'}{}
+\item{specificity.bias}{one of ('over','under') which deterens how the specificity is reported.}
 
-\item{case.values}{}
+\item{case.values}{observed values from the case.values}
 
-\item{sensitivity.bias='proportional'}{}
+\item{sensitivity.bias}{on of ('lower','upper','median','mean','proportional')
+which deterimens how the senwitivity
+is reported when the probability falls between data points.}
 
 \item{na.rm}{If TRUE, missing values are dropped from x and case.values. (default = FALSE)}
 
@@ -43,35 +47,53 @@ the estimated threshold.
 }
 \examples{
 # an example where a control ties the specificity level
-threshold(x = 1:10, spec = 0.9) # by default the threshold is higher than the value
+threshold(x = 1:10,
+          probs = 0.9) # by default the threshold is higher than the value
 
-# an example where two controls have the same value and the specificity is between them
-threshold(x = c(2:10,9), spec = 0.9) # by default the threshold is higher than the tied values
+# an example where two controls have the same value
+# and the specificity is between them
+threshold(x = c(2:10,9),
+          probs = 0.9) # by default the threshold is higher than the tied values
 
-# an example where there are cases values between the two controls just above and below the specificity level
-threshold(x = 1:10,spec = 0.95, cases = 9+((1:9/10)))
-threshold(x = 1:10,spec = 0.95, cases = 9+((1:9/10)),sensitivity.bias = 'median')
-threshold(x = 1:10,spec = 0.95, cases = 9+((1:9/10)),sensitivity.bias = 'mean') #note that since the mean would give a threshold equal to observed value, it defaults to the median
-threshold(x = 1:10,spec = 0.95, cases = 9+((1:9/10)),sensitivity.bias = 'lower')
-threshold(x = 1:10,spec = 0.95, cases = 9+((1:9/10)),sensitivity.bias = 'upper')
+# an example where there are case.values between the
+# two controls just above and below the specificity level
+threshold(x = 1:10,
+          probs = 0.95,
+          case.values = 9+((1:9/10)))
+threshold(x = 1:10,
+          probs = 0.95,
+          case.values = 9+((1:9/10)),
+          sensitivity.bias = 'median')
+# note that since the mean would return a threshold
+# equal to observed value, it defaults to the median
+threshold(x = 1:10,probs = 0.95,
+          case.values = 9+((1:9/10)),
+          sensitivity.bias = 'mean')
+threshold(x = 1:10,probs = 0.95,
+          case.values = 9+((1:9/10)),
+          sensitivity.bias = 'lower')
+threshold(x = 1:10,probs = 0.95,
+          case.values = 9+((1:9/10)),
+          sensitivity.bias = 'upper')
 
 # an example with the specificity at the top level
-threshold(x = c(1,1:10,10),spec = 0.99)
+threshold(x = c(1,1:10,10),probs = 0.99)
 # an example with the specificity at the bottom level
-threshold(x = c(1,1:10,10),spec = 0.01,specificity.bias='under')
+threshold(x = c(1,1:10,10),probs = 0.01,
+          specificity.bias='under')
 
-spec <- 0.70
+probs <- 0.70
 temp <- c()
 n = 50
 x = round(rnorm(n),2)
 for(i in 0:n){
-	(temp[i+1] <- sum( x < threshold(x=x,spec = i/n)))
+	(temp[i+1] <- sum( x < threshold(x=x,probs = i/n)))
 }
 max(abs(temp - (0:n)))
 max(table(x))
 threshold(x = rnorm(20)
-		 ,spec =0.99
-		 , cases = rnorm(20) + 1
+		 ,probs =0.99
+		 , case.values = rnorm(20) + 1
 		 ,specificity.bias='over'
 		 ,sensitivity.bias='proportional'
 		 )

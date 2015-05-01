@@ -33,7 +33,7 @@ venn <- function(data,
 				 main='',
 				 labels=dimnames(data)[[2]],
 				 ntext='All Others',
-				 add=F,
+				 add=FALSE,
 				 va=0,
 				 col,
 				 col.txt,
@@ -66,7 +66,7 @@ if(nclasses < 4){
 		plot(0,0
 			,xlim = c(-1,1)
 			,ylim = c(-1,1)
-			,axes = F
+			,axes = FALSE
 			,main=main
 			,xlab=''
 			,ylab=''
@@ -79,7 +79,7 @@ if(nclasses < 4){
 	graphics::symbols( x= center_x
 					 , y= center_y 
 					 , circles=rep(radii,nclasses)
-					 , add = T
+					 , add = TRUE
 					 , inches = FALSE
 					 , fg = col
 					 , lwd = 3
@@ -103,8 +103,10 @@ if(nclasses < 4){
 	}
 	(table_data <- table(data))#table(data[,1:nclasses]))
 	
-	# print the lables
-	(perm <- gtools::permutations(2,nclasses,repeats=T))
+	# PRINT THE LABLES
+	
+	#perm <- gtools::permutations(2,nclasses,repeats=TRUE)
+	perm <- as.matrix(rev(do.call(expand.grid,rep(list(1:2),nclasses))))
 	for(i in 2:(2^nclasses)){
 		(x_text <- mean(center_x[perm[i,] == 2])*(c(1,1.3,1.7,2)[nclasses]))
 		(y_text <- mean(center_y[perm[i,] == 2])*(c(1,1.3,1.7,2)[nclasses]) + va) 
@@ -146,7 +148,7 @@ if(nclasses < 4){
 							 ,1.15/(1-(1.08*f[4]))
 							 ,1.04/(1-(1.08*f[5]))
 							 )))
-			,axes = F
+			,axes = FALSE
 			,main=main
 			,xlab=''
 			,ylab=''
@@ -171,7 +173,7 @@ if(nclasses < 4){
 	vec <- c(0.13,0.375,0.625,0.875)
 	temp <- table(data)
 	TF <- c('TRUE','FALSE')
-	tf <- c(T,F)
+	tf <- c(TRUE,FALSE)
 	#print the numbers
 	for(i1 in 1:2)
 	for(i2 in 1:2)

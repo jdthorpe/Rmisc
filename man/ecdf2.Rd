@@ -4,17 +4,16 @@
 \alias{ecdf2}
 \title{Empirical thresholds corresponding to given specificities}
 \usage{
-ecdf2(x, ref, interpMethod = "proportional", na.rm = FALSE)
+ecdf2(x, ref, spec, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A vector of marker values}
 
-\item{case}{A logical vector where TRUE indicates that the corresonding marker value in X was
-is taken from a 'Case', and FALSE otherwise.}
+\item{ref}{an optional reference group.}
 
 \item{spec}{A vector specificities for the returned thresholds}
 
-\item{...}{(optional) Additoinal arguments to \code{threshold()}}
+\item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
 \value{
 A list containing the sensetivities, specificiees, and the corresponding thresholds (cutoffs)
@@ -23,6 +22,6 @@ A list containing the sensetivities, specificiees, and the corresponding thresho
 Empirical thresholds corresponding to given specificities.
 }
 \seealso{
-\code{\link{'threshold'}}
+\code{\link{threshold}}
 }
 

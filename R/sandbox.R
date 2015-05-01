@@ -19,12 +19,12 @@
 #' \code{options()}) and any libraries that are loaded by scripts that are  
 #' \code{source()}'ed will be unloaded, in order to restore the search path.
 #' 
-#' Note that \code{sandbox()} makes \emphasis{no} attemtp to reload libraries 
+#' Note that \code{sandbox()} makes \emph{no} attemtp to reload libraries 
 #' that are unloaded by a script that is \code{source()}'ed. 
 #' 
-#' This is \emphasis{NOT} a sandbox for evaluating potentially malicious scripts.
+#' This is \emph{NOT} a sandbox for evaluating potentially malicious scripts.
 #' Specifically, this does not prevent scripts from manipulating the local environment
-#' (e.g. via \code{file()},\code{read.table()},\code{write.table()}, and \emphasis{many}
+#' (e.g. via \code{file()},\code{read.table()},\code{write.table()}, and \emph{many}
 #' other functions).  Also, this sandbox can be escaped by simply including
 #' \code{base::source()} wihtin a script that is evaluated.  
 #' 
@@ -32,8 +32,8 @@
 #' URL to read from. "" indicates the connection stdin().
 #' @param local an environment in which to evaluate the script \code{file}
 #' @param ... Addiional arguments to \code{link[base]{source}}
-#' 
-setwd("H:\\Lab Data\\Novel Markers Trial")
+#' @export
+
 sandbox <- function(file,
 					 local = environment(),
 					 ...){
@@ -57,12 +57,13 @@ sandbox <- function(file,
 	on.exit({
 		options(..op..)
 		packages = sessionInfo()$otherPkgs
-		if(!is.null(packages)){
+		if(!is.null(packages) 
+		   && length(ls(pattern='\\.\\.ss\\.\\.',all.names=TRUE){
 			packages <- names(packages)
 			if(!is.null(..ss..$otherPkgs))
 				packages<- setdiff(packages,names(..ss..$otherPkgs))
 			for(pkg in packages)
-				eval(parse(text=paste0("detach(package:",pkg,",unload=T)")))
+				eval(parse(text=paste0("detach(package:",pkg,",unload=TRUE)")))
 		}
 	})
 	# This is a very week sandbox!!!

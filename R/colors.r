@@ -3,14 +3,15 @@
 # --------------------------------------------------------------------------------
 
 #' Choose from among the named colors in R 
+#'
 #' Choose from among the named colors in R using a graphical interface
 #'
-#' @param N the number of colors to chose
+#' @param n the number of colors to choose
 #' @param alpha (optional) an integer between 1 and 255 with the alpha chanel
+#' @param term logical, should colors be limited to the 26 terminal colors
+#'
 #' @export
-#' @examples
-#' cat_function()
-colorchoose<-function(n = 1,alpha,term=F){
+colorchoose<-function(n = 1,alpha,term=FALSE){
 	termcols <- c('black', 'blue', 'brown', 'cyan', 'darkBlue',
 			'darkcyan', 'darkgray', 'darkgreen', 'darkgrey',
 			'darkmagenta', 'darkred', 'darkyellow', 'gray',
@@ -27,17 +28,13 @@ colorchoose<-function(n = 1,alpha,term=F){
 	mod <- ceiling(sqrt(length(cols)))
 	plot(xlab = '',
 		 ylab = '',
-		 main = 'click for color name',
-		 c(0,mod ),
-		 c(0,mod ),
+		 main = 'Click for color name',
+		 c(0,mod),
+		 c(0,mod),
 		 type = 'n',
-		 axes = F)
-	for(i in 1:length(cols))
-		points(i %% mod,
-			   i %/% mod,
-			   col = cols[i],
-			   pch = 15,
-			   cex = 2.4)
+		 axes = FALSE)
+	s<-seq_along(cols)
+	points(s%%mod, s%/%mod, col = cols, pch = 15, cex = 2.4)
 	p<-locator(n)
 	#GET THE cols NAMES
 	cols <- cols[round(p$y)*mod + round(p$x)]
@@ -46,6 +43,7 @@ colorchoose<-function(n = 1,alpha,term=F){
 		cols <- col2hex(cname=cols,alpha=alpha)
 	return(cols)
 }
+
 
 #' Invert a color 
 #'
@@ -150,7 +148,9 @@ rainbow2<-function(n = 2, alpha = NA, col = NA){
 
 	temp<-cbind(col[,2])%*%rbind(alpha) + cbind(col[,1])%*%(1-rbind(alpha))
 	temp<-temp/256
-	rgb(r = temp[1,], g =  temp[2,],b =  temp[3,])
+	rgb(red = temp[1,],
+	   	green = temp[2,],
+		blue = temp[3,])
 }
 
 #-- rainbow3 <- function(...){
@@ -188,7 +188,7 @@ rainbow2<-function(n = 2, alpha = NA, col = NA){
 #-- 	if(n == 6 + 6)return(cols[sort(c(2*1:6,1,2,3,4,5,6))])
 #-- }
 
-col2hex <- function (cname,alpha = 1,overridealpha = T) {
+col2hex <- function (cname,alpha = 1,overridealpha = TRUE) {
 	if(length(alpha) == 1)
 		alpha <- rep(alpha,length(cname))
 

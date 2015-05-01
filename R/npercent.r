@@ -12,14 +12,17 @@
 #' @param of If True, the denominator is included in the out put text. (default=FALSE)
 #' @param N If True, the numerator is included in the output text. (default= TRUE)
 #' @param perc If True, the percentage is included in the output. (default= TRUE)
+#' @param ... additional arguments. (ignored)
 #' @export
+#' @rdname npercent
 #' @examples
 #' npercent(6,9)
 #' npercent(6,9,of=TRUE)
 #' npercent(factor(c('a','b','b','c','c','c')),of=TRUE)
 #' npercent(factor(c('a','b','b','c','c','c')),denominator=12,of=TRUE,N=FALSE)
 #' npercent(sample(c(TRUE,FALSE),10,TRUE),of=TRUE)
-#' npercent(strsplit('finished files are the result of years of scientific study combined with the experience of many years','')[[1]])
+#' npercent(strsplit('finished files are the result of years 
+#' of scientific study combined with the experience of many years','')[[1]])
 
 npercent <- function(numerator,...)
 	UseMethod('npercent')
@@ -36,7 +39,7 @@ np1 <- function(numerator,
 				join = ' ',
 				of = FALSE,
 				N=TRUE,
-				perc=T){
+				perc=TRUE){
 	paste(ifelse(N,numerator,'')
 		 ,ifelse(perc & N,join,'')
 		 ,ifelse(perc & N,'(','')
@@ -50,6 +53,7 @@ np1 <- function(numerator,
 } 
 
 #' @export
+#' @rdname npercent
 npercent.numeric <- function(numerator,
 							 denominator=sum(numerator,na.rm = na.rm),
 							 na.rm=FALSE,
@@ -89,25 +93,31 @@ npercent.logical <- function(numerator,
 							 na.rm = FALSE,
 							 ...) {
 	force(denominator)
-	npercent(sum(numerator,na.rm = na.rm),denominator=denominator,...)
+	npercent(sum(numerator,na.rm = na.rm),
+			 denominator=denominator,
+			 ...)
 }
 
 #' @export
 npercent.factor <- function(numerator,...){
 	out <- NULL
 	for(l in levels(numerator))
-		out <- c(out,npercent(numerator == l,...))
+		out <- c(out,npercent(numerator == l,
+							  ...))
 	names(out) <- levels(numerator)
 	return(out)
 }
 
 #' @export
-npercent.character <- function(x,...)
-	npercent.factor(factor(x),...)
+npercent.character <- function(numerator,...)
+	npercent.factor(factor(numerator),
+					...)
 
 #' @export
-npercent.table <- function(numerator,...){
-	tmp  <-  npercent(unclass(numerator),...)
+npercent.table <- function(numerator,
+						   ...){
+	tmp  <-  npercent(unclass(numerator),
+					  ...)
 	class(tmp) <- 'table'
 	numerator[] <- tmp
 	return(unclass(numerator))

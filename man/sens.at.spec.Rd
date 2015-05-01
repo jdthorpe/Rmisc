@@ -4,15 +4,15 @@
 \alias{sens.at.spec}
 \title{Empirical thresholds corresponding to given specificities}
 \usage{
-sens.at.spec(val, case, spec = 0.95)
+sens.at.spec(x, case, spec = 0.95)
 }
 \arguments{
+\item{x}{A vector of marker values}
+
 \item{case}{A logical vector where TRUE indicates that the corresonding marker value in X was
 is taken from a 'Case', and FALSE otherwise.}
 
 \item{spec}{A vector specificities for the returned thresholds}
-
-\item{x}{A vector of marker values}
 
 \item{...}{(optional) Additoinal arguments to \code{threshold()}}
 }
@@ -23,6 +23,6 @@ A list containing the sensetivities, specificiees, and the corresponding thresho
 Empirical thresholds corresponding to given specificities.
 }
 \seealso{
-\code{\link{'threshold'}}
+\code{\link{threshold}}
 }
 

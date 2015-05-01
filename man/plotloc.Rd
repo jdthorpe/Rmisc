@@ -15,7 +15,7 @@ The plot region ranges from 0 to 1 on both axes.  The coordinates returned
 are in plot coordinates.
 }
 \examples{
-plot(1:5,1:3)
+plot(c(1,5),c(-3,3))
 plotloc(1,1) # the top right corner of the plotting region
 plotloc(0,0) # the bottom left corner of the plotting region
 }

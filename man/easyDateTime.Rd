@@ -7,16 +7,21 @@
 easyDateTime(x)
 }
 \arguments{
-\item{x}{a varaiable coersable to Date}
+\item{x}{a varaiable coersable to Date class}
 }
 \description{
 Coersion to date format. Note that this is *much* slower than converting
 to date using as.Date(x,pattern) if you already know the date pattern
 }
+\details{
+Note that \code{libarary(lubridate)} is almost certianly a better way to go.
+}
 \examples{
-as.date('2013-01-31')
-as.date('01-31-2013')
-as.date('01/31/2013')
-as.date(c('2013-01-31','01/31/2013'))
+easyDateTime('2013-01-31')
+easyDateTime('01/31/2013')
+\dontrun{
+easyDateTime('01-31-2013') # non-stanard format
+easyDateTime(c('2013-01-31','01/31/2013')) # inconsistent format
+}
 }
 

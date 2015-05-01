@@ -4,10 +4,16 @@
 \alias{meansd}
 \title{Pretty printing of the mean and SD of a variable}
 \usage{
-meansd(x, ...)
+meansd(x, digits = 2, join = "", na.rm = FALSE)
 }
 \arguments{
 \item{x}{a variable to be summarized}
+
+\item{digits}{The number of digits to include in the mean (\code{digits[1]}) and standard deviation (\code{digits[1]}).}
+
+\item{join}{a string used to separate the mean and parens around the standard deviation}
+
+\item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
 \description{
 This function allows you to express your love of cats.

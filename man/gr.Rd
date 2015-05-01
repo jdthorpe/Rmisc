@@ -4,12 +4,16 @@
 \alias{gr}
 \title{Regular expressoin searches of the names of a data frame.}
 \usage{
-gr(pattern, x = names(data), ic = T, ...)
+gr(pattern, x = names(data), ic = TRUE, ...)
 }
 \arguments{
 \item{pattern}{a reguralar expression pattern}
 
 \item{x}{an object to be searched. If x is a \code{data.frame} then the names of x are searched}
+
+\item{ic}{logical. If FALSE, the pattern matching is case sensitive and if TRUE, case is ignored during matching}
+
+\item{...}{additional parameters for \code{\link[base]{grep}}}
 }
 \description{
 Regular expressoin searches of the names of a data frame

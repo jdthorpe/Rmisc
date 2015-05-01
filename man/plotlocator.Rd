@@ -19,7 +19,9 @@ unlike \code{graphics::locator()}, the values returned are in relative coordinat
 In relative coordinates, The plot region ranges from 0 to 1 on both axes.
 }
 \examples{
-cat_function()OT LOCATIONS
+\dontrun{
+plotlocator()
+}
 }
 \keyword{cats}
 

@@ -21,9 +21,11 @@
 #' parameters are named based on the following table :
 #' \tabular{cc}{a \tab c \cr b \tab d }
 #'
-#' @param a,b,ab,cd,acd,abcd,etc. the sum of 1 or more cells of the matrix \tabular{cc}{a \tab c \cr b \tab d }
+#' @param ... four arguments either [a] with of the format a,b,ab,cd,acd,abcd,etc. which represent 
+#' the sum of 1 or more cells of the matrix 
+#' \tabular{cc}{a \tab c \cr b \tab d }
 #' with the parameter names being alphabetical lists of the cells which they sum.
-#' @param odds.ratio the odds ratio (\code{(a/b)/(c/d)})
+#' or [b] the parameter \code{odds.ratio} with the odds ratio (\code{(a/b)/(c/d)})
 #' @export
 #' @examples
 #' 
@@ -38,7 +40,7 @@
 #' twoByTwo(odds.ratio = 1,ab=2,ac=3,abcd=5)
 #' twoByTwo(odds.ratio = 1.001,ab=2,ac=3,abcd=5)
 #'
-#' \notrun{
+#' \dontrun{
 #' 	# error 'n' is not a valid parameter, use 'abcd' instead
 #' 	twoByTwo(a= 1,ab=2,ac=3,n=4) 
 #'
@@ -102,8 +104,8 @@ twoByTwo <- function(...){
 		stop('please provide exactly 4 parameters')
 	if(length(unique(names(paramList))) != 4)
 		stop('please provide exactly 4 unique parameters')
-	if(!all(sapply(paramList,length) == 1))
-		stop('all parameters must have length 1')
+	if(!all(lu(sapply(paramList,length)) == 1))
+		stop('all parameters must have the same length')
 	if(any(sapply(paramList,is.na)))
 		stop('missing values not allowed')
 	if(!all(names(paramList) %in% paramNames)){
@@ -142,14 +144,14 @@ twoByTwo <- function(...){
 	stopifnot(length(little2) == 34)
 	data.frame(big, little1, little2)
 	# DO THE WORK
-	while(T){
+	while(TRUE){
 		# IF THE SOLUTION IS AVAILABLE, RETURN IT
 		if(all(letters[1:4] %in% names(paramList)))
 			return(matrix(unlist(paramList[letters[1:4]]),2))
 		if(all(c('odds.ratio','bd','cd','abcd') %in% names(paramList))){
 			call.params <- paramList[c('abcd','bd','cd','odds.ratio')]
 			names(call.params) <- c('N','L','E','Q')
-			vals <- try(do.call(ABCD,call.params),T)
+			vals <- try(do.call(ABCD,call.params),TRUE)
 			if(inherits(vals,'try-error'))
 				stop('No Such Matrix')
 			return(matrix(vals,2))

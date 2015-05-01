@@ -41,8 +41,10 @@
 #' 
 #' @param na.never If \code{TRUE}, missing values are ignored (default = FALSE)
 #' 
+#' @param p.val logical. If TRUE, pvalues are calculated. (Applies only to factor and character methods)
 #' @param ... # additional arguments to npercent methods
 #' @seealso \code{\link{summarize}} for summarizeing a variable 
+#' @rdname twobyn
 twobyn <- function(x, # x is any variabile to be compared between levels of `ltwo` 
 				  ltwo, # a logical variable for the second dimension of the resulting table
 				  variable.desc = deparse(substitute(x)), # name of the variable x
@@ -153,13 +155,13 @@ twobyn <- function(x, # x is any variabile to be compared between levels of `ltw
 		UseMethod('twobyn')
 }
 
-#' @export
-twobynmat <- function(...)
-	stop("twobynmat() is deprected: use twobyn(ltwo,variable.desc='') or twobyn(x,variable.desc='')")
+#-- twobynmat <- function(...)
+#-- 	stop("twobynmat() is deprected: use twobyn(ltwo,variable.desc='') or twobyn(x,variable.desc='')")
 
 # --------------------------------------------------------------------------------
 # a helper function that fomrats the output matrix
 # --------------------------------------------------------------------------------
+# An internal formatting function used by the \code{twobyn} family
 twobyn_fmt <- function(variable.desc ,			# Field: Variable
 					   lvls=names(tbl.true), 	# Field: Value
 					   tbl.false, 				# Field: False
@@ -267,6 +269,7 @@ default <- function(arg,default,exact=FALSE,...){
 # --------------------------------------------------------------------------------
 # the default for the generic (just a nice error message)
 # --------------------------------------------------------------------------------
+#' @rdname twobyn
 twobyn.default <- function(x,ltwo,variable.desc,...){
 	if(missing(x)){
 		if(missing(ltwo))
@@ -293,8 +296,8 @@ twobyn.default <- function(x,ltwo,variable.desc,...){
 
 #' @export
 #' @method twobyn logical 
-#' @family twobyn
 #' @inheritParams twobyn
+#' @rdname twobyn
 twobyn.logical <- function(x,ltwo,
 				  variable.desc = deparse(substitute(x)), # name of the variable x
 				  ...){
@@ -364,13 +367,14 @@ twobyn.logical <- function(x,ltwo,
 
 #' @export 
 #' @method twobyn Date 
-#' @family twobyn
 #' @inheritParams twobyn
+#' @rdname twobyn
 twobyn.Date <- function(x,...){
 	twobyn.numeric(unclass(x),...)
 }
 
 #' @export
+#' @rdname twobyn
 twobyn.numeric <- function(x,ltwo
 				  ,variable.desc = deparse(substitute(x)), # name of the variable x
 						   ...){
@@ -437,12 +441,14 @@ twobyn.numeric <- function(x,ltwo
 }
 
 #' @export
+#' @rdname twobyn
 twobyn.integer <- twobyn.numeric
 # --------------------------------------------------------------------------------
 # Method: factor and character
 # --------------------------------------------------------------------------------
 
 #' @export
+#' @rdname twobyn
 twobyn.character <- function(x,ltwo
 				  ,variable.desc = deparse(substitute(x)), # name of the variable x
 				  p.val=TRUE,...){
@@ -494,6 +500,7 @@ twobyn.character <- function(x,ltwo
 }
 
 #' @export
+#' @rdname twobyn
 twobyn.factor <- twobyn.character 
 
 

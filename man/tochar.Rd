@@ -2,12 +2,22 @@
 % Please edit documentation in R/tochar.r
 \name{tochar}
 \alias{tochar}
+\alias{tochar.default}
+\alias{tochar.numeric}
 \title{Convert object to pretty strings}
 \usage{
 tochar(x, ...)
+
+\method{tochar}{default}(x, ...)
+
+\method{tochar}{numeric}(x, digits = 1, ...)
 }
 \arguments{
-\item{love}{Do you love cats? Defaults to TRUE.}
+\item{x}{An object to be coerced to character}
+
+\item{...}{Additional arguments (unused as of this writing)}
+
+\item{digits}{If applicable, the number of digits to be included in the character representation.}
 }
 \description{
 Convert objects to strings with more contol than \code{\link[base]{as.character}()}
@@ -26,7 +36,7 @@ as.character(round(0.000123,digits=4)) #not pretty
 tochar(0.0000123,digits=4)
 as.character(round(0.0000123,digits=4)) #no significant digits
 
-\\notrun{
+\dontrun{
 tochar(sin)# cant coerce a function to string...
 }
 }

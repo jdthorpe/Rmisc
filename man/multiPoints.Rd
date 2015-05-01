@@ -15,17 +15,17 @@ multiPoints(x, y, n = if (!missing(col)) rep(ceiling(sqrt(ncol(col))), 2) else
 
 \item{n}{= if(!missing(col))}
 
-\item{col}{a matrix of colors with 1 row for each plot point}
+\item{col}{a matrix of colors with 1 row for each plot point. See \code{\link[graphics]{points}} for details.}
 
-\item{bg}{a matrix of background colors with 1 row for each plot point}
+\item{bg}{a matrix of background colors with 1 row for each plot point. See \code{\link[graphics]{points}} for details.}
+
+\item{pch}{a matrix of plotting ‘character’, i.e., symbol to use. See \code{\link[graphics]{points}} for details.}
 
 \item{xheight}{= strheight('M')*cex * 1.1,}
 
 \item{xwidth}{= strwidth('M')*cex * 1.1,}
 
 \item{...}{additional arguments to 'plot'}
-
-\item{pch=matrix(NA,length(x),ncol(col)),}{}
 }
 \description{
 Plotting with compound symbols made from a matrix of standard symbols
@@ -49,15 +49,15 @@ plot(x,y)
 multiPoints(x,y,n = 4,col=col)
 multiPoints(x,y,n = 1,col=col)
 multiPoints(x,y,n = 2,col=col)
-multiPoints(x,y,n = 2,col=col1,pch = matrix(1:4,5,4,byrow=T))
-multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=T),cex = 2)
+multiPoints(x,y,n = 2,col=col1,pch = matrix(1:4,5,4,byrow=TRUE))
+multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=TRUE),cex = 2)
 
 plot(x,y)
 multiPoints(x,y,n = 1,col=col,cex = 2)
-multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=T),cex = 2)
+multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=TRUE),cex = 2)
 points(x,y,pch = 15)
 
-multiPoints(x,y,n = 2,col='black',pch = matrix(1:20,5))
+#multiPoints(x,y,n = 2,col='black',pch = matrix(1:20,5))
 multiPoints(x,y,n = 2,col=col)
 }
 

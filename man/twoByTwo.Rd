@@ -7,10 +7,11 @@
 twoByTwo(...)
 }
 \arguments{
-\item{a,b,ab,cd,acd,abcd,etc.}{the sum of 1 or more cells of the matrix \tabular{cc}{a \tab c \cr b \tab d }
-with the parameter names being alphabetical lists of the cells which they sum.}
-
-\item{odds.ratio}{the odds ratio (\code{(a/b)/(c/d)})}
+\item{...}{four arguments either [a] with of the format a,b,ab,cd,acd,abcd,etc. which represent
+the sum of 1 or more cells of the matrix
+\tabular{cc}{a \tab c \cr b \tab d }
+with the parameter names being alphabetical lists of the cells which they sum.
+or [b] the parameter \code{odds.ratio} with the odds ratio (\code{(a/b)/(c/d)})}
 }
 \description{
 Calculate the contents, margins, and/or Odds Ratio from any 4 (independent) values of a two by two table.
@@ -35,7 +36,7 @@ twoByTwo(c= 1,ab=2,ac=3,abcd=4)
 twoByTwo(odds.ratio = 1,ab=2,ac=3,abcd=5)
 twoByTwo(odds.ratio = 1.001,ab=2,ac=3,abcd=5)
 
-\\notrun{
+\dontrun{
 	# error 'n' is not a valid parameter, use 'abcd' instead
 	twoByTwo(a= 1,ab=2,ac=3,n=4)
 

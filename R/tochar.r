@@ -6,8 +6,11 @@
 #'
 #' Convert objects to strings with more contol than \code{\link[base]{as.character}()} 
 #' and less confusion than \code{\link[base]{format}()} 
-#' @param love Do you love cats? Defaults to TRUE.
+#' @param x An object to be coerced to character
+#' @param digits If applicable, the number of digits to be included in the character representation.
+#' @param ... Additional arguments (unused as of this writing)
 #' @export
+#' @rdname tochar
 #' @examples
 #' tochar(0.00123,digits=4)
 #' as.character(round(0.00123,digits=4)) #same as above
@@ -21,7 +24,7 @@
 #' tochar(0.0000123,digits=4)
 #' as.character(round(0.0000123,digits=4)) #no significant digits
 #'
-#' \notrun{
+#' \dontrun{
 #' tochar(sin)# cant coerce a function to string...
 #' }
 
@@ -29,11 +32,9 @@ tochar <- function(x,...)
 	UseMethod('tochar')
 
 #' @export
-tochar.default <- function(...)
-	cat('I don\'t know how to coerce a variable of type "',
-		class(list(...)[[1]])[1],
-		'" to a string\n',
-		sep = '')
+#' @rdname tochar
+tochar.default <- function(x,...)
+	stop(paste0('I don\'t know how to coerce a variable of type "', class(x)[1], '" to a string\n'))
 
 #' @export
 tochar.character <- function(x,...)
@@ -51,7 +52,8 @@ tochar.Date <- function(x,...)
 tochar.factor <- tochar.Date 
 
 #' @export
-tochar.numeric <- function(x,digits=1){
+#' @rdname tochar
+tochar.numeric <- function(x,digits=1,...){
 	ntoc1 <- function(x,digits){
 		if(is.infinite(x) )
 			return(as.character(x))
@@ -78,11 +80,6 @@ tochar.double <- tochar.numeric
 tochar.integer <- tochar.numeric
 
 #' @export
-tochar.matrix <- function(x,...){
-	out <- matrix('',dim(x)[1],dim(x)[2])
-	for(i in 1:dim(x)[1])
-	for(j in 1:dim(x)[2])
-	out[i,j] <- tochar(x[i,j],...)
-	return(out)
-}
+tochar.matrix <- function(x,...)
+	matrix(tochar(as.vector(x),...),dim(x)[1],dim(x)[2])
 

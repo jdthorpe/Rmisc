@@ -2,12 +2,19 @@
 % Please edit documentation in R/npercent.r
 \name{npercent}
 \alias{npercent}
+\alias{npercent.numeric}
 \title{Pretty printing of a numerator and percentage}
 \usage{
 npercent(numerator, ...)
+
+\method{npercent}{numeric}(numerator, denominator = sum(numerator, na.rm =
+  na.rm), na.rm = FALSE, digits = 1, join = " ", of = FALSE, N = TRUE,
+  perc = TRUE, ...)
 }
 \arguments{
 \item{numerator}{The numerator of a fraction}
+
+\item{...}{additional arguments. (ignored)}
 
 \item{denominator}{The denominator of a fraction. (Default = sum(numerator,na.rm = na.rm))}
 
@@ -32,6 +39,7 @@ npercent(6,9,of=TRUE)
 npercent(factor(c('a','b','b','c','c','c')),of=TRUE)
 npercent(factor(c('a','b','b','c','c','c')),denominator=12,of=TRUE,N=FALSE)
 npercent(sample(c(TRUE,FALSE),10,TRUE),of=TRUE)
-npercent(strsplit('finished files are the result of years of scientific study combined with the experience of many years','')[[1]])
+npercent(strsplit('finished files are the result of years
+of scientific study combined with the experience of many years','')[[1]])
 }
 

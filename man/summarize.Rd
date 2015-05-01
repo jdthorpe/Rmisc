@@ -4,37 +4,31 @@
 \alias{summarize}
 \title{Summarize a variable in a nice table}
 \usage{
-summarize(x, varName = deparse(substitute(x)), lof = F, mof = F,
-  lyesonly = F, digits = 1, ...)
+summarize(x, varName = deparse(substitute(x)), lof = FALSE, mof = FALSE,
+  lyesonly = FALSE, digits = 1, ...)
 }
 \arguments{
 \item{x}{a variabile to summarized}
 
 \item{varName}{= 'x' # name of the variable x}
 
+\item{lof}{if \code{TRUE}  the denomiator is included in the percntage (defautl=FALSE).
+[example:\code{"15 (15\% of of 100)"}]}
+
 \item{mof}{if \code{TRUE}  the number of missing values is included in text summary}
 
-\item{lyesonly}{If \code{TRUE}, the number of false reponses is dropped from the output table (default = F)}
+\item{lyesonly}{If \code{TRUE}, the number of false reponses is dropped from the output table (default = FALSE)}
 
 \item{digits}{number of decimals used if the summary statistic is the mean and standard deviation (default = c(1,1))}
 
-\item{love}{Do you love cats? Defaults to TRUE.}
-
-\item{lof=F}{if \code{TRUE}  the denomiator is included in the percntage
-[example:\code{"15 (15\% of of 100)"}]}
-
-\item{digits.meansd}{deciaml precision when the summary statistic is
+\item{...}{additional arguments to \code{\link{meansd}}
 the mean and sd of x}
 }
 \description{
-Summarize a variable in a nice table that is compatibile with summaries produced by \code{\link{twoByN}}
-This function allows you to express your love of cats.
-}
-\examples{
-cat_function()
+Summarize a variable in a nice table that is compatibile with summaries produced by \code{\link{twobyn}}
 }
 \seealso{
-\code{\link{twoByN}} for summarizeing a variable between two groups
+\code{\link{twobyn}} for summarizeing a variable between two groups
 }
 \keyword{cats}
 

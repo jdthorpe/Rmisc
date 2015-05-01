@@ -13,13 +13,14 @@
 #' 
 #' @param x,y the coordinates of points in the plot 
 #' @param n = if(!missing(col))
-#' @param col a matrix of colors with 1 row for each plot point
-#' @param bg a matrix of background colors with 1 row for each plot point
-#' @param pch=matrix(NA,length(x),ncol(col)),
+#' @param col a matrix of colors with 1 row for each plot point. See \code{\link[graphics]{points}} for details.
+#' @param bg a matrix of background colors with 1 row for each plot point. See \code{\link[graphics]{points}} for details.
+#' @param pch a matrix of plotting ‘character’, i.e., symbol to use. See \code{\link[graphics]{points}} for details.
 #' @param xheight = strheight('M')*cex * 1.1,
 #' @param xwidth = strwidth('M')*cex * 1.1,
 #' @param ... additional arguments to 'plot'
 #' 
+#' @export
 #' @examples
 #' n <- c(2,2)
 #' x <- 1:5
@@ -38,15 +39,15 @@
 #' multiPoints(x,y,n = 4,col=col)
 #' multiPoints(x,y,n = 1,col=col)
 #' multiPoints(x,y,n = 2,col=col)
-#' multiPoints(x,y,n = 2,col=col1,pch = matrix(1:4,5,4,byrow=T))
-#' multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=T),cex = 2)
+#' multiPoints(x,y,n = 2,col=col1,pch = matrix(1:4,5,4,byrow=TRUE))
+#' multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=TRUE),cex = 2)
 #' 
 #' plot(x,y)
 #' multiPoints(x,y,n = 1,col=col,cex = 2)
-#' multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=T),cex = 2)
+#' multiPoints(x,y,n = 1,col=col1,pch = matrix(letters[1:4],5,4,byrow=TRUE),cex = 2)
 #' points(x,y,pch = 15)
 #' 
-#' multiPoints(x,y,n = 2,col='black',pch = matrix(1:20,5))
+#' #multiPoints(x,y,n = 2,col='black',pch = matrix(1:20,5))
 #' multiPoints(x,y,n = 2,col=col)
 
 multiPoints <- function(x,y,

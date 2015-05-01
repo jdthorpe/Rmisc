@@ -5,7 +5,7 @@
 \title{Plot Venn Diagrams}
 \usage{
 venn(data, main = "", labels = dimnames(data)[[2]], ntext = "All Others",
-  add = F, va = 0, col, col.txt, lty, prefix = "", suffix = "")
+  add = FALSE, va = 0, col, col.txt, lty, prefix = "", suffix = "")
 }
 \arguments{
 \item{data}{a \code{data.frame} containing 1 to 4 indicator (logical) variables}

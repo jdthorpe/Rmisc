@@ -10,9 +10,11 @@
 #' @examples
 #' dtos()
 #' dtos('2013-01-31')
-#' dtos('01-31-2013')
 #' dtos('01/31/2013')
-#' dtos(c('2013-01-31','01/31/2013'))
+#' \dontrun{
+#' dtos('01-31-2013') # non-stanard format
+#' dtos(c('2013-01-31','01/31/2013')) # inconsistent format
+#' }
 dtos <- function(x=as.Date(date(),"%a %b %d %H:%M:%S %Y")){
 	if(all(is.na(x)))
 		return(x)
@@ -30,13 +32,17 @@ dtos <- function(x=as.Date(date(),"%a %b %d %H:%M:%S %Y")){
 #' Coersion to date format. Note that this is *much* slower than converting 
 #' to date using as.Date(x,pattern) if you already know the date pattern
 #'
-#' @param x a varaiable coersable to Date
+#' Note that \code{libarary(lubridate)} is almost certianly a better way to go.
+#'
+#' @param x a varaiable coersable to Date class
 #' @export
 #' @examples
-#' as.date('2013-01-31')
-#' as.date('01-31-2013')
-#' as.date('01/31/2013')
-#' as.date(c('2013-01-31','01/31/2013'))
+#' easyDateTime('2013-01-31')
+#' easyDateTime('01/31/2013')
+#' \dontrun{
+#' easyDateTime('01-31-2013') # non-stanard format
+#' easyDateTime(c('2013-01-31','01/31/2013')) # inconsistent format
+#' }
 easyDateTime <- function(x){
 	# this paralells  the code in read.csv
 	if(inherits(x,c('Date',"POSIXct","POSIXt")))
