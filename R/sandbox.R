@@ -35,7 +35,7 @@
 #' @export
 
 sandbox <- function(file,
-					 local = environment(),
+					 local = eval.parent(quote(environment())),
 					 ...){
 	# note that this works b/c source(...,local=TRUE) evaluates in the current environment,
 	# and we're taking advantage of hte fact that a new environment is created
@@ -48,10 +48,6 @@ sandbox <- function(file,
 	..ss.. <- sessionInfo()
 	..op.. <- options()
 	..envir.. <- local
-	source <- function(file, local, ...)
-		base::source(file,
-					 local=..envir..,
-					 ...)
 	on.exit({
 		options(..op..)
 		packages = sessionInfo()$otherPkgs
@@ -64,6 +60,10 @@ sandbox <- function(file,
 				eval(parse(text=paste0("detach(package:",pkg,",unload=TRUE)")))
 		}
 	})
+	source <- function(file, local, ...)
+		base::source(file,
+					 local=..envir..,
+					 ...)
 	# This is a very week sandbox!!!
 	base::source(file,local=..envir..,...)
 	
