@@ -43,8 +43,6 @@ sandbox <- function(file,
 
 	stopifnot(is.environment(local))
 	if(identical(.GlobalEnv,local))
-		
-	
 	 
 	# capture some sessoin info
 	..ss.. <- sessionInfo()
@@ -58,7 +56,7 @@ sandbox <- function(file,
 		options(..op..)
 		packages = sessionInfo()$otherPkgs
 		if(!is.null(packages) 
-		   && length(ls(pattern='\\.\\.ss\\.\\.',all.names=TRUE){
+		   && length(ls(pattern='\\.\\.ss\\.\\.',all.names=TRUE))){
 			packages <- names(packages)
 			if(!is.null(..ss..$otherPkgs))
 				packages<- setdiff(packages,names(..ss..$otherPkgs))
