@@ -1,5 +1,5 @@
 ---
-title: "Installing the Jmisc, Jutils, PEB, SIM and other R packages"
+title: "Installing the Jmisc, Jcsv, PEB, SIM and other R packages"
 author: "Jason Thorpe [ jdthorpe_at_gmail.com ]"
 date: "`r Sys.Date()`"
 output: 
@@ -15,15 +15,12 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 ## Installing R and Required R packages
 
-The latest release for R can be found at:
-
-	[http://cran.fhcrc.org/](http://cran.fhcrc.org/)
-
+The latest release for R can be found at [cran.fhcrc.org](http://cran.fhcrc.org/)
 by clicking on the link for "R Binaries" at the left side of the page, 
 following the link for your computer's OS (windows, most likely), and then
 by clicking on the link to 'base' and then click "Download R".
 
-Once R is installed, you will need to install some pacagges as follows. 
+Once R is installed, you will need to install some pacagges as follows:
 
 ```{r, eval = FALSE}
 # intall the package builder  packages
@@ -39,8 +36,6 @@ install.packages(c('RODBC'),repos="http://cran.fhcrc.org")
 install.packages(c('pander'),repos="http://cran.fhcrc.org")
 ```
 
-You can also install these packages using the 'packages' menu, if you prefer.
-
 ## Installing Packages the Easy Way 
 
 ### Option 1 (Windows Only)
@@ -52,7 +47,7 @@ Local packages can be installed from the binary '.zip' files either
 ```{r, eval = FALSE}
 home <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools/pkg-bin"
 zipFiles <- c("Jmisc_0.1.zip",
-				   "Jutils_0.1.zip",
+				   "Jcsv_0.1.zip",
 				   "mfactor_0.1.zip",
 				   "PEB_0.1.zip",
 				   "sim_0.1.zip")
@@ -74,7 +69,7 @@ Local packages can be installed from source packages at the command line via:
 ```{r , eval = FALSE}
 home <- "R:/Urban_N/UrbanGrp/Data Analysis/JThorpe/RTools/pkg-src"
 tarFiles <- c("Jmisc_0.1.tar.gz",
-				   "Jutils_0.1.tar.gz",
+				   "Jcsv_0.1.tar.gz",
 				   "mfactor_0.1.tar.gz",
 				   "PEB_0.1.tar.gz",
 				   "sim_0.1.tar.gz")
@@ -114,8 +109,8 @@ devtools::document(file.path(root,"Jmisc"))
 devtools::install(file.path(root,"Jmisc"))
 devtools::build_vignettes(file.path(root,"Jmisc"))
 
-devtools::document(file.path(root,"Jutils"))
-devtools::install(file.path(root,"Jutils"))
+devtools::document(file.path(root,"Jcsv"))
+devtools::install(file.path(root,"Jcsv"))
 
 devtools::document(file.path(root,"mfactor"))
 devtools::install(file.path(root,"mfactor"))
@@ -143,7 +138,7 @@ Once installed, these packages can be loaded in the usual way
 
 ```{r, eval = FALSE}
 require('Jmisc')
-require('Jutils')
+require('Jcsv')
 require('PEB')
 require('mfactor')
 require('sim')
@@ -152,7 +147,7 @@ require('sim')
 Package contents can be explored in the usual way. 
 ```{r, eval = FALSE}
 help(package='Jmisc')
-help(package='Jutils')
+help(package='Jcsv')
 help(package='PEB')
 help(package='mfactor')
 help(package='sim')
@@ -229,7 +224,7 @@ To build the source packages (including the vignettes), use:
 
 ```{r, eval = FALSE}
 devtools::build(file.path(root,"Jmisc")		,path=file.path(root,'pkg-src'))
-devtools::build(file.path(root,"Jutils")	,path=file.path(root,'pkg-src'))
+devtools::build(file.path(root,"Jcsv")	,path=file.path(root,'pkg-src'))
 devtools::build(file.path(root,"PEB")		,path=file.path(root,'pkg-src'))
 devtools::build(file.path(root,"mfactor")	,path=file.path(root,'pkg-src'))
 devtools::build(file.path(root,"SIM")		,path=file.path(root,'pkg-src'))
@@ -239,7 +234,7 @@ and to build the (windows) binary packages (including the vignettes), use:
 
 ```{r, eval = FALSE}
 devtools::build(file.path(root,"Jmisc")		,path=file.path(root,'pkg-bin'),binary=TRUE)
-devtools::build(file.path(root,"Jutils")	,path=file.path(root,'pkg-bin'),binary=TRUE)
+devtools::build(file.path(root,"Jcsv")	,path=file.path(root,'pkg-bin'),binary=TRUE)
 devtools::build(file.path(root,"PEB")		,path=file.path(root,'pkg-bin'),binary=TRUE)
 devtools::build(file.path(root,"mfactor")	,path=file.path(root,'pkg-bin'),binary=TRUE)
 devtools::build(file.path(root,"SIM")		,path=file.path(root,'pkg-bin'),binary=TRUE)

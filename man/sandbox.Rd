@@ -4,7 +4,7 @@
 \alias{sandbox}
 \title{A weak sandbox in which to \code{source()} files.}
 \usage{
-sandbox(file, local = environment(), ...)
+sandbox(file, local = eval.parent(quote(environment())), ...)
 }
 \arguments{
 \item{file}{a connection or a character string giving the pathname of the file or
