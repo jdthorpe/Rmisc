@@ -40,9 +40,9 @@ dapply<-function(X,INDEX,FUN,...){
 	# OTHERWISE, APPLY 1 RETURN VALUE PER ELEMENT
 	out <- c()
 	for(name in names(tmp) ){
-		if( sum(INDX == ifelse(inherits(INDX,'factor'),
+		if( sum(INDEX == ifelse(inherits(INDEX,'factor'),
 							   name,
-							   as(name,typeof(INDX)))) != length(tmp[[name]]))
+							   as(name,typeof(INDEX)))) != length(tmp[[name]]))
 			stop('FUN must return values of length 1 or with length equal to the number of replicates')
 		out[INDEX == name] <- tmp[[name]]
 	}
