@@ -30,17 +30,19 @@ dapply<-function(X,INDEX,FUN,...){
 	#ARE ALL THE RETURN VALUES LENGTH 1?
 	all_length_1 <- TRUE
 	for(name in names(tmp))
-		if(length(tmp[[name]]) > 1)
+		if(length(tmp[[name]]) > 1){
 			all_length_1 <- FALSE
+			break
+		}
 	#IF EVERY ELEMENT OF tmp IS LENGTH 1, APPLY TO EACH OF THE VALUES
 	if(all_length_1)
-		return(tmp[match(y,names(tmp))])
+		return(tmp[match(INDEX,names(tmp))])
 	# OTHERWISE, APPLY 1 RETURN VALUE PER ELEMENT
 	out <- c()
 	for(name in names(tmp) ){
 		if( sum(y == ifelse(inherits(y,'factor'),name,as(name,typeof(y)))) != length(tmp[[name]]))
 			stop('FUN must return values of length 1 or with length equal to the number of replicates')
-		out[y == name] <- tmp[[name]]
+		out[INDEX == name] <- tmp[[name]]
 	}
 	return(out)
 }
